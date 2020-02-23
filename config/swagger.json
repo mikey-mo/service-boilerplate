@@ -1,0 +1,91 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "title",
+    "description": "description",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/api/v1",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "initial"
+        ],
+        "description": "Initial Route",
+        "parameters": [
+          {
+            "name": "Initial",
+            "in": "body",
+            "description": "Initial",
+            "schema": {
+              "$ref": "#/definitions/Initial"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Initial 200",
+            "schema": {
+              "$ref": "#/definitions/Initial Response"
+            }
+          },
+          "400": {
+            "description": "Initial 400",
+            "schema": {
+              "$ref": "#/definitions/Initial Reject Response"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Initial": {
+      "required": [
+        "initial"
+      ],
+      "properties": {
+        "initial": {
+          "type": "string",
+          "example":"Initial..."
+        }
+      }
+    },
+    "Initial Response": {
+      "properties": {
+        "initial": {
+          "type": "string",
+          "example": "Initial"
+        }
+      }
+    },
+    "Initial Reject Response": {
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "Initial"
+        }
+      }
+    }
+  }
+}
