@@ -17,6 +17,8 @@
   },
   "plugins": ["jest"],
   "rules": {
-    "max-len": ["error", { "code": 100 }]
+    "max-len": ["error", { "code": 100 }],
+    "spaced-comment": "error",
+    "indent": ["error", 4]
   }
 }

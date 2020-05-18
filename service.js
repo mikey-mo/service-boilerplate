@@ -7,30 +7,29 @@ const RUN_ENVIRONMENT = process.env.NODE_ENV || 'production';
 
 if (RUN_ENVIRONMENT === 'development') dotenv.config();
 
-const initialRoute = require('./routes/initial-route');
+const initialRoute = require('./routes/initial');
 const swaggerDoc = require('./config/swagger.json');
 const { route, version, description } = require('./config/version');
-const authenticationServices = require('./services/authentication-services');
+const authenticationServices = require('./services/authentication');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 1000000 }));
-app.use(bodyParser.json({ limit: '50mb', extended: true }));
-
 const PORT = process.env.PORT || 8080;
 
-app.use(`${route}`, initialRoute);
-app.use(
-  `${route}/docs`,
-  [authenticationServices.checkSwaggerAuthorizationToken, swaggerUi.serve],
-  swaggerUi.setup(swaggerDoc),
-);
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 1000000 }))
+    .use(bodyParser.json({ limit: '50mb', extended: true }))
+    .use(`${route}`, initialRoute)
+    .use(
+        `${route}/docs`,
+        [authenticationServices.checkSwaggerAuthorizationToken, swaggerUi.serve],
+        swaggerUi.setup(swaggerDoc),
+    );
 
 app.get(route, (req, res) => res.json({ version, description }));
 
 module.exports = {
-  app,
-  RUN_ENVIRONMENT,
-  PORT,
-  route,
+    app,
+    RUN_ENVIRONMENT,
+    PORT,
+    route,
 };
