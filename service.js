@@ -10,7 +10,7 @@ if (RUN_ENVIRONMENT === 'development') dotenv.config();
 const initialRoute = require('./routes/initial');
 const swaggerDoc = require('./config/swagger.json');
 const { route, version, description } = require('./config/version');
-const authenticationServices = require('./services/authentication');
+const authenticationService = require('./services/authentication');
 
 const app = express();
 
@@ -18,10 +18,10 @@ const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 1000000 }))
     .use(bodyParser.json({ limit: '50mb', extended: true }))
-    .use(`${route}`, initialRoute)
+    .use(`${route}/initial`, initialRoute)
     .use(
         `${route}/docs`,
-        [authenticationServices.checkSwaggerAuthorizationToken, swaggerUi.serve],
+        [authenticationService.checkSwaggerAuthorizationToken, swaggerUi.serve],
         swaggerUi.setup(swaggerDoc),
     );
 

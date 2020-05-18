@@ -1,51 +1,38 @@
 const passport = require('passport');
 const { BasicStrategy } = require('passport-http');
 const { Strategy: BearerStrategy } = require('passport-http-bearer');
+// const bcrypt = require('bcrypt');
 
-const db = require('./database');
-
-class AuthenticationError extends Error {
-    constructor(message) {
-        super(message);
-        this.message = message;
-        this.name = 'Authentication Error';
-    }
-}
+const databaseService = require('./database');
 
 passport.use('client-basic', new BasicStrategy(
-    (async (email, password, done) => {
-        console.log(password, done);
-        const dbClient = db.connect();
+    (async (username, password, done) => {
         let client;
         try {
-            client = await dbClient.getClient({ email });
+            client = await databaseService.getClient({ username });
+            // if (!await bcrypt.compareSync(password, client.password)) return done(null, false);
         } catch (error) {
-            throw new AuthenticationError('Invalid Credentials');
+            return done(error);
         }
-        return client;
+        return done(null, client);
     }),
 ));
 
 passport.use('client-bearer', new BearerStrategy(
-    ((accessToken, done) => {
-        console.log(accessToken, done);
-        // Token.findOne({ value: accessToken }, (error, token) => {
-        //     if (!token.scope.filter((scope) => scope === 'read')
-        //       .length) return callback(null, false);
-        //     if (error) return callback(error);
-        //     if (!token) return callback(null, false);
-        //     return User.findOne({ _id: token.userId }, (userError, user) => {
-        //         if (userError) return callback(userError);
-        //         if (!user) return callback(null, false);
-        //         return callback(null, user, { scope: '*' });
-        //     });
-        // });
+    (async (token, done) => {
+        let client;
+        try {
+            client = await databaseService.getClientByToken({ token });
+        } catch (error) {
+            return done(error);
+        }
+        return done(null, client);
     }),
 ));
 
-const checkSwaggerAuthorizationToken = (req, res, next) => next();
-
 module.exports = {
-    checkSwaggerAuthorizationToken,
+    checkSwaggerAuthorizationToken(req, res, next) {
+        return next();
+    },
     checkClientBasic: passport.authenticate(['client-basic', 'client-bearer'], { session: false }),
 };

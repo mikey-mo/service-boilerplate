@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const authenticationServices = require('../services/authentication');
+const authenticationService = require('../services/authentication');
 
 router.get(
     '/',
-    [authenticationServices.checkClientBasic],
+    [authenticationService.checkClientBasic],
     (req, res) => res.status(200).json({ initial: 'route' }),
 );
 
