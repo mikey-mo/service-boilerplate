@@ -1,6 +1,6 @@
 const validator = require('express-joi-validation').createValidator();
 
-const initialSchema = require('../schemas/initial-schema');
+const initialSchema = require('../schemas/initial');
 
 module.exports = {
     validateInitialHeaders() {
