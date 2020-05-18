@@ -7,6 +7,11 @@ module.exports = {
         return {
             username: 'username',
             password: 'password',
+            admin: false,
+            profile: {
+                something: 'something',
+                somethingElse: 'something else',
+            },
         };
     },
     async getClientByToken() {
@@ -14,6 +19,11 @@ module.exports = {
         return {
             username: 'username',
             password: 'password',
+            admin: false,
+            profile: {
+                something: 'something',
+                somethingElse: 'something else',
+            },
         };
     },
 };

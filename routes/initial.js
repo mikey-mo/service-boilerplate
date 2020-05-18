@@ -3,7 +3,7 @@ const authenticationService = require('../services/authentication');
 
 router.get(
     '/',
-    [authenticationService.checkClientBasic],
+    [authenticationService.checkClient],
     (req, res) => res.status(200).json({ initial: 'route' }),
 );
 
